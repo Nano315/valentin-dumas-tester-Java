@@ -6,39 +6,52 @@ import com.parkit.parkingsystem.model.Ticket;
 <span class="fc" id="L6">public class FareCalculatorService {</span>
 
     public void calculateFare(Ticket ticket) {
+        // Méthode par défaut (sans réduction)
+<span class="fc" id="L10">        calculateFare(ticket, false);</span>
+<span class="fc" id="L11">    }</span>
 
-<span class="pc bpc" id="L10" title="1 of 4 branches missed.">        if (ticket.getOutTime() == null || ticket.getOutTime().before(ticket.getInTime())) {</span>
-<span class="fc" id="L11">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot; + ticket.getOutTime());</span>
+    public void calculateFare(Ticket ticket, boolean discount) {
+<span class="pc bpc" id="L14" title="1 of 4 branches missed.">        if (ticket.getOutTime() == null || ticket.getOutTime().before(ticket.getInTime())) {</span>
+<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot; + ticket.getOutTime());</span>
         }
 
-<span class="fc" id="L14">        long inTimeMillis = ticket.getInTime().getTime();</span>
-<span class="fc" id="L15">        long outTimeMillis = ticket.getOutTime().getTime();</span>
+<span class="fc" id="L18">        long inTimeMillis = ticket.getInTime().getTime();</span>
+<span class="fc" id="L19">        long outTimeMillis = ticket.getOutTime().getTime();</span>
 
-<span class="fc" id="L17">        double durationInHours = (double) (outTimeMillis - inTimeMillis) / (1000 * 60 * 60);</span>
+<span class="fc" id="L21">        double durationInHours = (double) (outTimeMillis - inTimeMillis) / (1000 * 60 * 60);</span>
 
-<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (durationInHours &lt; 0) {</span>
-<span class="nc" id="L20">            throw new IllegalArgumentException(&quot;Out time is earlier than in time.&quot;);</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (durationInHours &lt; 0) {</span>
+<span class="nc" id="L24">            throw new IllegalArgumentException(&quot;Out time is earlier than in time.&quot;);</span>
         }
 
-        // Implémentation de la gratuité pour moins de 30 minutes
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (durationInHours &lt; 0.5) {</span>
-<span class="fc" id="L25">            ticket.setPrice(0);</span>
-<span class="fc" id="L26">            return; // on arrête la méthode, c'est gratuit</span>
+        // Gratuit si moins de 30 minutes
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (durationInHours &lt; 0.5) {</span>
+<span class="fc" id="L29">            ticket.setPrice(0);</span>
+<span class="fc" id="L30">            return;</span>
         }
 
-        // Sinon, on applique le tarif normal
-<span class="pc bpc" id="L30" title="1 of 3 branches missed.">        switch (ticket.getParkingSpot().getParkingType()) {</span>
+        // Tarif plein (déjà mis en place précédemment)
+        double price;
+<span class="pc bpc" id="L35" title="1 of 3 branches missed.">        switch (ticket.getParkingSpot().getParkingType()) {</span>
             case CAR: {
-<span class="fc" id="L32">                ticket.setPrice(durationInHours * Fare.CAR_RATE_PER_HOUR);</span>
-<span class="fc" id="L33">                break;</span>
+<span class="fc" id="L37">                price = durationInHours * Fare.CAR_RATE_PER_HOUR;</span>
+<span class="fc" id="L38">                break;</span>
             }
             case BIKE: {
-<span class="fc" id="L36">                ticket.setPrice(durationInHours * Fare.BIKE_RATE_PER_HOUR);</span>
-<span class="fc" id="L37">                break;</span>
+<span class="fc" id="L41">                price = durationInHours * Fare.BIKE_RATE_PER_HOUR;</span>
+<span class="fc" id="L42">                break;</span>
             }
             default:
-<span class="nc" id="L40">                throw new IllegalArgumentException(&quot;Unknown Parking Type&quot;);</span>
+<span class="nc" id="L45">                throw new IllegalArgumentException(&quot;Unknown Parking Type&quot;);</span>
         }
-<span class="fc" id="L42">    }</span>
+
+        // Si discount est true, on applique 5% de remise
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (discount) {</span>
+<span class="fc" id="L50">            price = price * 0.95;</span>
+        }
+
+        // On met à jour le prix final
+<span class="fc" id="L54">        ticket.setPrice(price);</span>
+<span class="fc" id="L55">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

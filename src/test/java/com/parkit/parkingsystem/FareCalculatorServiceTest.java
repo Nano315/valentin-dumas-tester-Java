@@ -169,4 +169,56 @@ public class FareCalculatorServiceTest {
         assertEquals(0, ticket.getPrice());
     }
 
+    @Test
+    public void calculateFareCarWithDiscount() {
+        // GIVEN
+        Date inTime = new Date();
+        // Simule un stationnement d’1 heure par exemple
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+        Date outTime = new Date();
+
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+        Ticket ticket = new Ticket();
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+
+        // WHEN
+        // Pour le moment, vous allez appeler une version à 2 paramètres
+        // (que vous créerez juste après) avec 'discount = true'
+        fareCalculatorService.calculateFare(ticket, true);
+
+        // THEN
+        // Sur 1 heure de stationnement, le tarif voiture plein pot est
+        // = 1 heure * Fare.CAR_RATE_PER_HOUR (1.5)
+        // Avec 5 % de remise => 1.5 * 0.95 = 1.425
+        double expectedPrice = Fare.CAR_RATE_PER_HOUR * 0.95;
+        assertEquals(expectedPrice, ticket.getPrice(), 0.001);
+    }
+
+    @Test
+    public void calculateFareBikeWithDiscount() {
+        // GIVEN
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+        Date outTime = new Date();
+
+        ParkingSpot parkingSpot = new ParkingSpot(2, ParkingType.BIKE, false);
+
+        Ticket ticket = new Ticket();
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+
+        // WHEN
+        fareCalculatorService.calculateFare(ticket, true);
+
+        // THEN
+        // Sur 1 heure de stationnement, le tarif moto plein pot est
+        // = 1 heure * Fare.BIKE_RATE_PER_HOUR (1.0)
+        // Avec 5 % de remise => 1.0 * 0.95 = 0.95
+        double expectedPrice = Fare.BIKE_RATE_PER_HOUR * 0.95;
+        assertEquals(expectedPrice, ticket.getPrice(), 0.001);
+    }
 }
