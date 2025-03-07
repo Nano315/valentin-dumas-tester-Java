@@ -61,7 +61,7 @@ public class ParkingService {
             }
 <span class="nc" id="L62">        } catch (Exception e) {</span>
 <span class="nc" id="L63">            logger.error(&quot;Unable to process incoming vehicle&quot;, e);</span>
-        }
+<span class="nc" id="L64">        }</span>
 <span class="nc" id="L65">    }</span>
 
     private String getVehichleRegNumber() throws Exception {
@@ -77,14 +77,14 @@ public class ParkingService {
 <span class="nc" id="L77">            parkingNumber = parkingSpotDAO.getNextAvailableSlot(parkingType);</span>
 <span class="nc bnc" id="L78" title="All 2 branches missed.">            if (parkingNumber &gt; 0) {</span>
 <span class="nc" id="L79">                parkingSpot = new ParkingSpot(parkingNumber, parkingType, true);</span>
-<span class="nc" id="L80">            } else {</span>
+            } else {
 <span class="nc" id="L81">                throw new Exception(&quot;Error fetching parking number from DB. Parking slots might be full&quot;);</span>
             }
 <span class="nc" id="L83">        } catch (IllegalArgumentException ie) {</span>
 <span class="nc" id="L84">            logger.error(&quot;Error parsing user input for type of vehicle&quot;, ie);</span>
 <span class="nc" id="L85">        } catch (Exception e) {</span>
 <span class="nc" id="L86">            logger.error(&quot;Error fetching next available parking slot&quot;, e);</span>
-        }
+<span class="nc" id="L87">        }</span>
 <span class="nc" id="L88">        return parkingSpot;</span>
     }
 
@@ -136,8 +136,8 @@ public class ParkingService {
             }
 <span class="nc" id="L137">        } catch (Exception e) {</span>
 <span class="nc" id="L138">            logger.error(&quot;Unable to process exiting vehicle&quot;, e);</span>
-        }
+<span class="fc" id="L139">        }</span>
 <span class="fc" id="L140">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
