@@ -11,31 +11,34 @@ import com.parkit.parkingsystem.model.Ticket;
 <span class="fc" id="L11">            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot; + ticket.getOutTime());</span>
         }
 
-        // Récupère les millisecondes depuis le 1er janvier 1970
-<span class="fc" id="L15">        long inTimeMillis = ticket.getInTime().getTime();</span>
-<span class="fc" id="L16">        long outTimeMillis = ticket.getOutTime().getTime();</span>
+<span class="fc" id="L14">        long inTimeMillis = ticket.getInTime().getTime();</span>
+<span class="fc" id="L15">        long outTimeMillis = ticket.getOutTime().getTime();</span>
 
-        // Durée en heures : on divise par (1000 ms * 60 sec * 60 min)
-<span class="fc" id="L19">        double durationInHours = (double) (outTimeMillis - inTimeMillis) / (1000 * 60 * 60);</span>
+<span class="fc" id="L17">        double durationInHours = (double) (outTimeMillis - inTimeMillis) / (1000 * 60 * 60);</span>
 
-        // S’il y a eu une erreur et que c’est négatif, on peut lever une exception
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (durationInHours &lt; 0) {</span>
-<span class="nc" id="L23">            throw new IllegalArgumentException(&quot;Out time is earlier than in time.&quot;);</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (durationInHours &lt; 0) {</span>
+<span class="nc" id="L20">            throw new IllegalArgumentException(&quot;Out time is earlier than in time.&quot;);</span>
         }
 
-        // On applique le tarif en fonction du type de véhicule
-<span class="pc bpc" id="L27" title="1 of 3 branches missed.">        switch (ticket.getParkingSpot().getParkingType()) {</span>
+        // Implémentation de la gratuité pour moins de 30 minutes
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (durationInHours &lt; 0.5) {</span>
+<span class="fc" id="L25">            ticket.setPrice(0);</span>
+<span class="fc" id="L26">            return; // on arrête la méthode, c'est gratuit</span>
+        }
+
+        // Sinon, on applique le tarif normal
+<span class="pc bpc" id="L30" title="1 of 3 branches missed.">        switch (ticket.getParkingSpot().getParkingType()) {</span>
             case CAR: {
-<span class="fc" id="L29">                ticket.setPrice(durationInHours * Fare.CAR_RATE_PER_HOUR);</span>
-<span class="fc" id="L30">                break;</span>
+<span class="fc" id="L32">                ticket.setPrice(durationInHours * Fare.CAR_RATE_PER_HOUR);</span>
+<span class="fc" id="L33">                break;</span>
             }
             case BIKE: {
-<span class="fc" id="L33">                ticket.setPrice(durationInHours * Fare.BIKE_RATE_PER_HOUR);</span>
-<span class="fc" id="L34">                break;</span>
+<span class="fc" id="L36">                ticket.setPrice(durationInHours * Fare.BIKE_RATE_PER_HOUR);</span>
+<span class="fc" id="L37">                break;</span>
             }
             default:
-<span class="nc" id="L37">                throw new IllegalArgumentException(&quot;Unknown Parking Type&quot;);</span>
+<span class="nc" id="L40">                throw new IllegalArgumentException(&quot;Unknown Parking Type&quot;);</span>
         }
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L42">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
