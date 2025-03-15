@@ -1,17 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.parkit.parkingsystem.integration.ParkingDataBaseIT
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 4.901 s <<< FAILURE! - in com.parkit.parkingsystem.integration.ParkingDataBaseIT
-testParkingLotExitRecurringUser  Time elapsed: 4.172 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: Le ticket n’a pas été retrouvé ! ==> expected: not <null>
-	at com.parkit.parkingsystem.integration.ParkingDataBaseIT.testParkingLotExitRecurringUser(ParkingDataBaseIT.java:143)
-
-testParkingLotExit  Time elapsed: 0.024 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: Le ticket n’a pas été sauvegardé en base ! ==> expected: not <null>
-	at com.parkit.parkingsystem.integration.ParkingDataBaseIT.testParkingACar(ParkingDataBaseIT.java:78)
-	at com.parkit.parkingsystem.integration.ParkingDataBaseIT.testParkingLotExit(ParkingDataBaseIT.java:95)
-
-testParkingACar  Time elapsed: 0.021 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: Le ticket n’a pas été sauvegardé en base ! ==> expected: not <null>
-	at com.parkit.parkingsystem.integration.ParkingDataBaseIT.testParkingACar(ParkingDataBaseIT.java:78)
-
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.779 s - in com.parkit.parkingsystem.integration.ParkingDataBaseIT
