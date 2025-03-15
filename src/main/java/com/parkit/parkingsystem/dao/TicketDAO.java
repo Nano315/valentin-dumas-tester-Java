@@ -21,25 +21,31 @@ public class TicketDAO {
 
     public boolean saveTicket(Ticket ticket) {
         Connection con = null;
+        PreparedStatement ps = null;
+        boolean insertOK = false;
         try {
             con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET);
-            // ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-            // ps.setInt(1,ticket.getId());
+            ps = con.prepareStatement(DBConstants.SAVE_TICKET);
             ps.setInt(1, ticket.getParkingSpot().getId());
             ps.setString(2, ticket.getVehicleRegNumber());
             ps.setDouble(3, ticket.getPrice());
             ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
-            ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
-            return ps.execute();
+            ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : new Timestamp(ticket.getOutTime().getTime()));
+    
+            int rowAffected = ps.executeUpdate(); // <-- on utilise executeUpdate pour un INSERT
+            insertOK = (rowAffected == 1);        // si 1 ligne insérée => true
+    
         } catch (Exception ex) {
-            logger.error("Error fetching next available slot", ex);
+            logger.error("Error inserting ticket", ex);
         } finally {
+            dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
-            return false;
         }
-    }
+    
+        return insertOK;
+    }    
 
+    @SuppressWarnings("finally")
     public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
         Ticket ticket = null;
